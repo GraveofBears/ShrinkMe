@@ -12,12 +12,13 @@ namespace ShrinkMe
     public class ShrinkMe : BaseUnityPlugin
     {
         private const string ModName = "ShrinkMe";
-        private const string ModVersion = "0.0.0.1";
-        private const string ModGUID = "com.zarboz.ShrinkMe";
+        private const string ModVersion = "0.0.1";
+        private const string ModGUID = "com.odinplus.shrinkme";
         private static Harmony harmony = null!;
 
         internal static SE_Stats? ShrinkStat;
         internal static Item? HaldorPipe;
+        internal static Item? HaldorBud;
         internal static ConfigEntry<float> smallestshrink;
         internal static ConfigEntry<float> biggestsize;
         internal static ConfigEntry<int> luckyno;
@@ -42,14 +43,23 @@ namespace ShrinkMe
             harmony.PatchAll(assembly);
             ServerConfigLocked = config("1 - General", "Lock Configuration", true, "If on, the configuration is locked and can be changed by server admins only.");
             configSync.AddLockingConfigEntry(ServerConfigLocked);
+            HaldorBud = new("odinspipe", "HaldorsSpecialBlend");           //add item
+            HaldorBud.Crafting.Add(CraftingTable.Workbench, 2);
+            HaldorBud.Name.English("HaldorsSpecialBlend");
+            HaldorBud.Description.English("Feels sticky..");
+            HaldorBud.RequiredItems.Add("Pukeberries", 1);
+            HaldorBud.RequiredItems.Add("Resin", 1);
+            HaldorBud.RequiredUpgradeItems.Add("Pukeberries", 6);
+            HaldorBud.RequiredUpgradeItems.Add("Resin", 1);
+            HaldorBud.CraftAmount = 10;
             HaldorPipe = new("odinspipe", "HaldorsMagicPipe");           //add item
             HaldorPipe.Crafting.Add(CraftingTable.Forge, 2);
             HaldorPipe.Name.English("HaldorsMagicPipe");
             HaldorPipe.Description.English("Haldor must have dropped this, wonder what it does.");
             HaldorPipe.RequiredItems.Add("Wood", 1);
-            HaldorPipe.RequiredItems.Add("BlackMetal", 8);
+            HaldorPipe.RequiredItems.Add("Copper", 8);
             HaldorPipe.RequiredUpgradeItems.Add("Wood", 6);
-            HaldorPipe.RequiredUpgradeItems.Add("BlackMetal", 6);
+            HaldorPipe.RequiredUpgradeItems.Add("Copper", 6);
             HaldorPipe.CraftAmount = 1;
             smallestshrink = config("1 - General", "Smallest size", 0.35f, new ConfigDescription("This is the smallest you can go 1.0 being normal and .35 being 35 perecent", new AcceptableValueList<float>(0.35f, 0.9f)));
             biggestsize = config("1 - General", "Biggest Size", 1.75f, new ConfigDescription("This is how big you can go when you land your lucky number", new AcceptableValueList<float>(1.5f, 2.25f)));
@@ -70,8 +80,8 @@ namespace ShrinkMe
 
             public static void Postfix()
             {
-                var itemtoadd = HaldorPipe?.Prefab;
-                itemtoadd!.GetComponent<ItemDrop>().m_itemData.m_shared.m_equipStatusEffect = ShrinkStat;
+                var itemtoadd = HaldorBud?.Prefab;
+                itemtoadd!.GetComponent<ItemDrop>().m_itemData.m_shared.m_consumeStatusEffect = ShrinkStat;
             }
         }
     }
