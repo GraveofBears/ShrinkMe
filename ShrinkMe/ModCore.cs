@@ -12,7 +12,7 @@ namespace ShrinkMe
     public class ShrinkMe : BaseUnityPlugin
     {
         private const string ModName = "ShrinkMe";
-        private const string ModVersion = "0.0.1";
+        private const string ModVersion = "1.0.2";
         private const string ModGUID = "com.odinplus.shrinkme";
         private static Harmony harmony = null!;
 
@@ -65,7 +65,7 @@ namespace ShrinkMe
             biggestsize = config("1 - General", "Biggest Size", 1.75f, new ConfigDescription("This is how big you can go when you land your lucky number", new AcceptableValueList<float>(1.5f, 2.25f)));
             luckyno = config("1 - General", "Lucky number", 6, new ConfigDescription("When this nunber is rolled you get to be big instead of small"));
             ShrinkStat = ScriptableObject.CreateInstance<SE_Shrink>();
-            configSync.AddLockingConfigEntry(ServerConfigLocked);
+
         }
 
         [HarmonyPatch(typeof(ObjectDB), nameof(ObjectDB.Awake))]
