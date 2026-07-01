@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -12,19 +13,21 @@ namespace ShrinkMe
     public class ShrinkMe : BaseUnityPlugin
     {
         private const string ModName = "ShrinkMe";
-        private const string ModVersion = "1.0.2";
+        private const string ModVersion = "1.0.6";
         private const string ModGUID = "com.odinplus.shrinkme";
         private static Harmony harmony = null!;
 
-        internal static SE_Stats? ShrinkStat;
-        internal static Item? HaldorPipe;
-        internal static Item? HaldorBud;
+        internal static SE_Stats ShrinkStat;
+        internal static Item HaldorPipe;
+        internal static Item HaldorBud;
         internal static ConfigEntry<float> smallestshrink;
         internal static ConfigEntry<float> biggestsize;
         internal static ConfigEntry<int> luckyno;
+        internal static ConfigEntry<bool> randomBoneSizeEnabled;
+        internal static ConfigEntry<bool> skyEffectEnabled;
 
-        ConfigSync configSync = new(ModGUID) 
-            { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion};
+        ConfigSync configSync = new(ModGUID)
+        { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion };
         internal static ConfigEntry<bool> ServerConfigLocked = null!;
         ConfigEntry<T> config<T>(string group, string name, T value, ConfigDescription description, bool synchronizedSetting = true)
         {
@@ -64,9 +67,21 @@ namespace ShrinkMe
             smallestshrink = config("1 - General", "Smallest size", 0.35f, new ConfigDescription("This is the smallest you can go 1.0 being normal and .35 being 35 perecent", new AcceptableValueList<float>(0.35f, 0.9f)));
             biggestsize = config("1 - General", "Biggest Size", 1.75f, new ConfigDescription("This is how big you can go when you land your lucky number", new AcceptableValueList<float>(1.5f, 2.25f)));
             luckyno = config("1 - General", "Lucky number", 6, new ConfigDescription("When this nunber is rolled you get to be big instead of small"));
+            randomBoneSizeEnabled = config("1 - General", "Random Bone Sizes", false, "If on, individual bones are randomly resized for a more chaotic look while the effect is active.");
+
+            // synchronizedSetting: false - this is purely a local visual
+            // preference (pink/purple clouds, kaleidoscope sun while baked).
+            // It never affects what anyone else sees, so unlike the other
+            // settings above it has no business being server-locked.
+            skyEffectEnabled = config("1 - General", "Trippy Sky Effect", true, "If on, the screen gets a slow-shifting pink/purple color wash while baked. Purely visual, only you see it.", synchronizedSetting: false);
             ShrinkStat = ScriptableObject.CreateInstance<SE_Shrink>();
 
         }
+        // Old ScaleSync (RPC-string based) removed - replaced entirely by
+        // ShrinkSync.cs, which drives state off each player's ZDO instead
+        // of a manually-invoked RPC gated on IsOwner(). Same root problem
+        // as the old ShrinkNetSync: the client triggering the effect isn't
+        // reliably the ZDO owner, so the RPC could silently never fire.
 
         [HarmonyPatch(typeof(ObjectDB), nameof(ObjectDB.Awake))]
         public class DBPatch
@@ -75,7 +90,7 @@ namespace ShrinkMe
             {
                 if (__instance.m_StatusEffects.Count <= 0) return;
                 __instance.m_StatusEffects.Add(ShrinkStat);
-                
+
             }
 
             public static void Postfix()

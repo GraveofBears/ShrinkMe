@@ -1,0 +1,119 @@
+{
+  "Files": [
+    {
+      "Name": "cab-6f798d71945627a054ce5b43e3a41025",
+      "Assets": [
+        {
+          "PathID": -8660172210423348865,
+          "Name": "sfx_coughing",
+          "Type": "AudioClip"
+        },
+        {
+          "PathID": -8114854945801987098,
+          "Name": "glow1",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": -7490925599188319230,
+          "Name": "Haldor_e",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": -7048952760182217101,
+          "Name": "weedsbud",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": -6921278447567855718,
+          "Name": "ZNetView",
+          "Type": "MonoScript"
+        },
+        {
+          "PathID": -5232594763057583137,
+          "Name": "cloud_2x2_soft",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": -4858793491353029093,
+          "Name": "pipe",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": -3199127172829194001,
+          "Name": "ItemDrop",
+          "Type": "MonoScript"
+        },
+        {
+          "PathID": -2834364910642478880,
+          "Name": "ZSyncTransform",
+          "Type": "MonoScript"
+        },
+        {
+          "PathID": -1865967510825027725,
+          "Name": "ETFX_AuraVerticalCentered",
+          "Type": "Mesh"
+        },
+        {
+          "PathID": -531502632686827411,
+          "Name": "haldorsblend",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 2236001822647334300,
+          "Name": "circle",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 3185719694198472467,
+          "Name": "Haldor_n",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 3334762730478082309,
+          "Name": "ZSFX",
+          "Type": "MonoScript"
+        },
+        {
+          "PathID": 5964461774959321515,
+          "Name": "Haldor_m",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 6308782726112306758,
+          "Name": "Pipe",
+          "Type": "Mesh"
+        },
+        {
+          "PathID": 6359963614771179964,
+          "Name": "smooth_stone",
+          "Type": "Mesh"
+        },
+        {
+          "PathID": 7049350837383973172,
+          "Name": "Haldor_d",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 7933586476130783742,
+          "Name": "TimedDestruction",
+          "Type": "MonoScript"
+        },
+        {
+          "PathID": 8330434834870289032,
+          "Name": "weedleaf",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 8879120120627136298,
+          "Name": "ring",
+          "Type": "Texture2D"
+        },
+        {
+          "PathID": 9210479484463970038,
+          "Name": "SE_Rested",
+          "Type": "MonoScript"
+        }
+      ]
+    }
+  ]
+}
